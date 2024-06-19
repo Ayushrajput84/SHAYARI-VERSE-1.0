@@ -1,2 +1,238 @@
-# SHAYARI-VERSE-1.0
-My website 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🌟 SHAYARI HAVEN 🌟</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f7f7f7; /* Light grey background */
+            margin: 0;
+            padding: 0;
+        }
+        header {
+            background-color: #5a6fb8; /* Slightly lighter blue */
+            color: #fff;
+            text-align: center;
+            padding: 30px 0;
+            border-radius: 10px 10px 0 0;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            margin: 0;
+            font-size: 36px;
+            font-weight: bold;
+            letter-spacing: 2px;
+        }
+        .container {
+            max-width: 700px;
+            margin: 40px auto;
+            padding: 20px;
+            background-color: rgba(255, 255, 255, 0.9);
+            border-radius: 10px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+        }
+        .submit-shayari {
+            background-color: #f0f0f0; /* Lightened background color */
+            border: 2px solid #5a6fb8; /* Match border with header */
+            color: #5a6fb8; /* Match text with header */
+            padding: 10px 20px;
+            border-radius: 5px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-bottom: 20px;
+            font-size: 20px;
+            font-weight: bold;
+            display: inline-block;
+        }
+        .submit-shayari:hover {
+            background-color: #5a6fb8;
+            color: #fff;
+        }
+        #shayariForm {
+            margin-top: 20px;
+        }
+        textarea {
+            width: calc(100% - 22px);
+            padding: 12px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            resize: none;
+            margin-bottom: 10px;
+            font-size: 16px;
+        }
+        input[type="submit"] {
+            background-color: #5a6fb8; /* Match submit button with header */
+            color: #fff;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            font-size: 18px;
+        }
+        input[type="submit"]:hover {
+            background-color: #4a5a9d; /* Slightly darker for hover effect */
+        }
+        .shayari {
+            background-color: #fff;
+            border: 1px solid #ccc;
+            margin-top: 20px;
+            padding: 20px;
+            border-radius: 10px;
+            position: relative;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            transition: transform 0.2s;
+        }
+        .shayari:hover {
+            transform: translateY(-5px);
+        }
+        .shayari-author, .shayari-date {
+            font-size: 14px;
+            color: #555;
+        }
+        .shayari-options {
+            position: absolute;
+            bottom: 10px;
+            right: 10px;
+        }
+        .like-dislike {
+            margin-right: 10px;
+            cursor: pointer;
+            user-select: none;
+        }
+        .like-dislike:hover {
+            color: #5a6fb8; /* Match with header */
+        }
+        button {
+            background-color: #f44336;
+            color: #fff;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            font-size: 14px;
+        }
+        button:hover {
+            background-color: #d32f2f;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>SHAYARI VERSE</h1>
+    </header>
+    <div class="container">
+        <div class="submit-shayari" id="submitShayari">✏️ Add Shayari</div>
+        <form action="#" method="POST" id="shayariForm" style="display: none;">
+            <textarea name="shayari" id="shayari" cols="30" rows="5" placeholder="Write your Shayari here"></textarea>
+            <br>
+            <input type="submit" value="Submit">
+        </form>
+        
+        <div id="shayariList">
+            <!-- Shayari will be displayed here -->
+        </div>
+    </div>
+    
+    <script>
+        var submitShayariBtn = document.getElementById("submitShayari");
+        var shayariForm = document.getElementById("shayariForm");
+        var currentUser = "admin"; // Set the current user. Change as needed.
+
+        submitShayariBtn.addEventListener("click", function() {
+            if (shayariForm.style.display === "block") {
+                shayariForm.style.display = "none";
+                submitShayariBtn.textContent = "✏️ Add Shayari";
+            } else {
+                shayariForm.style.display = "block";
+                submitShayariBtn.textContent = "✖️ Cancel";
+            }
+        });
+
+        document.getElementById("shayariForm").addEventListener("submit", function(event) {
+            event.preventDefault();
+            var shayariText = document.getElementById("shayari").value;
+            if(shayariText.trim() !== "") {
+                var shayariItem = document.createElement("div");
+                shayariItem.className = "shayari";
+                shayariItem.textContent = shayariText;
+
+                var authorInput = prompt("Please enter your name:");
+                var author = authorInput ? authorInput : "Anonymous";
+                var authorElement = document.createElement("div");
+                authorElement.className = "shayari-author";
+                authorElement.textContent = "By: " + author;
+
+                var date = new Date().toLocaleDateString();
+                var dateElement = document.createElement("div");
+                dateElement.className = "shayari-date";
+                dateElement.textContent = "Date: " + date;
+
+                var shayariOptions = document.createElement("div");
+                shayariOptions.className = "shayari-options";
+                
+                var likeButton = document.createElement("span");
+                likeButton.className = "like-dislike";
+                likeButton.textContent = "👍 0";
+                var dislikeButton = document.createElement("span");
+                dislikeButton.className = "like-dislike";
+                dislikeButton.textContent = "👎 0";
+                var likesCount = 0;
+                var dislikesCount = 0;
+                
+                likeButton.addEventListener("click", function() {
+                    if (!likeButton.classList.contains("liked")) {
+                        likeButton.classList.add("liked");
+                        dislikeButton.classList.remove("disliked");
+                        likesCount++;
+                        if(dislikesCount > 0) dislikesCount--;
+                        updateCounters();
+                    }
+                });
+                
+                dislikeButton.addEventListener("click", function() {
+                    if (!dislikeButton.classList.contains("disliked")) {
+                        dislikeButton.classList.add("disliked");
+                        likeButton.classList.remove("liked");
+                        dislikesCount++;
+                        if(likesCount > 0) likesCount--;
+                        updateCounters();
+                    }
+                });
+
+                var deleteButton = document.createElement("button");
+                deleteButton.textContent = "delete";
+                deleteButton.addEventListener("click", function() {
+                    var isOwner = currentUser === author || currentUser === "admin";
+                    if (isOwner && confirm("Are you sure you want to delete this Shayari?")) {
+                        shayariItem.remove();
+                    } else if (!isOwner) {
+                        alert("You do not have permission to delete this Shayari.");
+                    }
+                });
+                
+                function updateCounters() {
+                    likeButton.textContent = `👍 ${likesCount}`;
+                    dislikeButton.textContent = `👎 ${dislikesCount}`;
+                }
+                
+                shayariOptions.appendChild(likeButton);
+                shayariOptions.appendChild(dislikeButton);
+                shayariOptions.appendChild(deleteButton);
+                shayariItem.appendChild(authorElement);
+                shayariItem.appendChild(dateElement);
+                shayariItem.appendChild(shayariOptions);
+                
+                document.getElementById("shayariList").appendChild(shayariItem);
+                document.getElementById("shayariForm").reset();
+            }
+            shayariForm.style.display = "none";
+            submitShayariBtn.textContent = "✏️ Add Shayari";
+        });
+    </script>
+</body>
+</html>
